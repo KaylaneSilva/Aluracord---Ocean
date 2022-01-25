@@ -1,4 +1,5 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import React from 'react';
 import appConfig from '../config.json';
 
 function GlobalStyle() {
@@ -47,7 +48,8 @@ function Title({children, tag}) {
 }
 
 export default function PaginaInicial() {
-  const username = 'KaylaneSilva';
+  // const username = 'KaylaneSilva';
+  const [username, setUsername] = React.useState('');
 
   return (
     <>
@@ -98,6 +100,12 @@ export default function PaginaInicial() {
                   backgroundColor: appConfig.theme.colors.neutrals[800],
                 },
               }}
+              value={ username }
+              onChange={ function({ target }) {
+                const value = target.value;
+
+                setUsername(value);
+              } }
             />
             <Button
               type='submit'
