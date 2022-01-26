@@ -19,9 +19,20 @@ function Title({children, tag}) {
   )
 }
 
+async function fetchApi(username) {
+  const url = `https://api.github.com/users/${username}`;
+  
+  const aleatorio = fetch(url)
+  .then(response => response.json())
+
+  return aleatorio;
+}
+
 export default function PaginaInicial() {
   const [username, setUsername] = React.useState('');
   const route = useRouter();
+  const allInfo = fetchApi(username);
+  console.log(allInfo);
   return (
     <>
       <Box
@@ -84,6 +95,7 @@ export default function PaginaInicial() {
             <Button
               type='submit'
               label='Entrar'
+              disabled={username.length < 2}
               fullWidth
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
