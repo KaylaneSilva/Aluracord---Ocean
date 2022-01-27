@@ -2,7 +2,7 @@ import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import React from 'react';
 import { useRouter } from 'next/router';
 import appConfig from '../config.json';
-import '../form.css';
+// import '../form.css';
 
 function Title({children, tag}) {
   const Tag = tag || "h1";
