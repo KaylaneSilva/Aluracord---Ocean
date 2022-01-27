@@ -2,6 +2,7 @@ import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import React from 'react';
 import { useRouter } from 'next/router';
 import appConfig from '../config.json';
+import '../form.css';
 
 function Title({children, tag}) {
   const Tag = tag || "h1";
@@ -57,6 +58,7 @@ export default function PaginaInicial() {
             boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
             backgroundColor: appConfig.theme.colors.neutrals[700],
           }}
+          className='glass'
         >
           {/* Formulário */}
           <Box
