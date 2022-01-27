@@ -45,6 +45,7 @@ export default function PaginaInicial() {
         }}
       >
         <Box
+          as='div'
           styleSheet={{
             display: 'flex',
             alignItems: 'center',
@@ -56,7 +57,7 @@ export default function PaginaInicial() {
             width: '100%', maxWidth: '700px',
             borderRadius: '5px', padding: '32px', margin: '16px',
             boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-            backgroundColor: appConfig.theme.colors.neutrals[700],
+            backgroundColor: 'rgb(21, 21, 21, 0.50)',
           }}
           className='glass'
         >
