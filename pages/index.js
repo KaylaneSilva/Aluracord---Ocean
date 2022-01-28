@@ -22,17 +22,16 @@ function Title({children, tag}) {
 
 async function fetchApi(username) {
   const url = `https://api.github.com/users/${username}`;
-  
-  const aleatorio = fetch(url)
-  .then(response => response.json())
-
-  return aleatorio;
+  const getObj = await fetch(url)
+  // const info = await getObj.json();
+  return [await getObj.json()]
 }
 
 export default function PaginaInicial() {
   const [username, setUsername] = React.useState('');
   const route = useRouter();
-  const allInfo = fetchApi(username);
+  const allInfo = fetchApi('KaylaneSilva');
+  
   console.log(allInfo);
   return (
     <>
