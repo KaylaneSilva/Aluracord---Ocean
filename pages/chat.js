@@ -1,15 +1,28 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
+import { useRouter } from 'next/router';
 import React from 'react';
 import appConfig from '../config.json';
 const { createClient } = require("@supabase/supabase-js");
+import { ButtonSendSticker } from '../src/ButtonSendSticker';
 
 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMzMDcwOSwiZXhwIjoxOTU4OTA2NzA5fQ.DskJ1i0B52HiJccPsJ5prz7_h5DiTVJN30Pxv1iCrec';
 const SUPABASE_URL = 'https://stlqyrgjyunaaupgbcrg.supabase.co';
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+function escutaMensagensEmTempoReal(adicionaMensagem) {
+  return supabaseClient
+    .from('mensagens')
+    .on('INSERT', (respostaLive) => {
+      adicionaMensagem(respostaLive.new);
+    })
+    .subscribe();
+}
+
 export default function ChatPage() {
   // Sua lógica vai aqui
+  const roteamento = useRouter();
+  const usuarioLogado = roteamento.query.username;
   const [message, setMessage] = React.useState('');
   const [listMessage, setListMessage] = React.useState([]);
 
@@ -22,12 +35,32 @@ export default function ChatPage() {
         console.log(data);
         setListMessage(data)
     })
-  }, [])
+
+    const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
+      console.log('Nova mensagem:', novaMensagem);
+      console.log('listaDeMensagens:', listaDeMensagens);
+      // Quero reusar um valor de referencia (objeto/array) 
+      // Passar uma função pro setState
+
+      setListMessage((valorAtualDaLista) => {
+        return [
+          novaMensagem,
+          ...valorAtualDaLista,
+        ]
+      });
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    }
+  }, []);
+
+  
 
   function handleNewMessage(newMessage) {
     const mensagem = {
       texto: newMessage,
-      de: 'KaylaneSilva',
+      de: usuarioLogado,
     }
     supabaseClient
       .from('mensagens')
@@ -106,6 +139,11 @@ export default function ChatPage() {
                 backgroundColor: appConfig.theme.colors.neutrals[800],
                 marginRight: '12px',
                 color: appConfig.theme.colors.neutrals[200],
+              }}
+            />
+            <ButtonSendSticker
+              onStickerClick={(sticker) => {
+                handleNewMessage(':sticker: ' + sticker);
               }}
             />
           </Box>
@@ -189,7 +227,13 @@ function MessageList(props) {
                 {(new Date().toLocaleDateString())}
               </Text>
             </Box>
-            {mensagem.texto}
+            {mensagem.texto.startsWith(':sticker:')
+              ? (
+                <Image src={mensagem.texto.replace(':sticker:', '')} />
+              )
+              : (
+                mensagem.texto
+              )}
           </Text>
         );
       })}
