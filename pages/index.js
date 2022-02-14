@@ -99,6 +99,7 @@ export default function PaginaInicial() {
             >
               <TextField
                 fullWidth
+                placeholder='User do Github aqui'
                 textFieldColors={{
                   neutral: {
                     textColor: appConfig.theme.colors.neutrals[200],
@@ -110,7 +111,6 @@ export default function PaginaInicial() {
                 value={username}
                 onChange={function ({ target }) {
                   const value = target.value;
-
                   setUsername(value);
                 }}
               />
@@ -147,7 +147,7 @@ export default function PaginaInicial() {
             <Button
               type='submit'
               label='Entrar'
-              disabled={username.length < 2}
+              disabled={!image}
               fullWidth
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
