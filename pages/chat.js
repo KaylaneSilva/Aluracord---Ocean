@@ -37,11 +37,6 @@ export default function ChatPage() {
     })
 
     const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
-      console.log('Nova mensagem:', novaMensagem);
-      console.log('listaDeMensagens:', listaDeMensagens);
-      // Quero reusar um valor de referencia (objeto/array) 
-      // Passar uma função pro setState
-
       setListMessage((valorAtualDaLista) => {
         return [
           novaMensagem,
@@ -184,7 +179,7 @@ function MessageList(props) {
         marginBottom: '16px',
       }}
     >
-      {props.mensagens.map((mensagem) => {
+      { props.mensagens ? props.mensagens.map((mensagem) => {
         return (
           <Text
             key={mensagem.id}
@@ -236,7 +231,7 @@ function MessageList(props) {
               )}
           </Text>
         );
-      })}
+      }) : <p>Erro ao recuperar as mensagens</p>}
     </Box>
   )
 }
